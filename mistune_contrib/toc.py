@@ -1,11 +1,11 @@
 
 
-class TOCMixin(object):
+class TocMixin(object):
     def header(self, text, level, raw=None):
         if not hasattr(self, 'toc_tree'):
             self.toc_tree = []
             self.toc_count = 0
-        rv = '<h%d id="#toc-%d>%s</h%d>\n' % (
+        rv = '<h%d id="toc-%d">%s</h%d>\n' % (
             level, self.toc_count, text, level
         )
         self.toc_tree.append((self.toc_count, text, level, raw))
@@ -17,13 +17,13 @@ class TOCMixin(object):
 
         :param level: render toc to the given level
         """
-        return '\n'.join(self._iter_toc(level))
+        return ''.join(self._iter_toc(level))
 
     def _iter_toc(self, level):
         first_level = None
         last_level = None
 
-        yield '<ul id="table-of-content">'
+        yield '<ul id="table-of-content">\n'
 
         for toc in self.toc_tree:
             index, text, l, raw = toc
@@ -36,19 +36,24 @@ class TOCMixin(object):
                 # based on first level
                 first_level = l
                 last_level = l
-                yield '<li><a href="#toc-%d">%s</a></li>' % (index, text)
+                yield '<li><a href="#toc-%d">%s</a>' % (index, text)
             elif last_level == l:
-                yield '<li><a href="#toc-%d">%s</a></li>' % (index, text)
+                yield '</li>\n<li><a href="#toc-%d">%s</a>' % (index, text)
             elif last_level == l - 1:
                 last_level = l
-                yield '<li><a href="#toc-%d">%s</a>' % (index, text)
-                # a new indention
-                yield '<ul>'
-            elif last_level == l + 1:
-                last_level = l
-                yield '<li><a href="#toc-%d">%s</a></li>' % (index, text)
+                yield '<ul>\n<li><a href="#toc-%d">%s</a>' % (index, text)
+            elif last_level > l:
                 # close indention
-                yield '</ul>'
                 yield '</li>'
+                while last_level > l:
+                    yield '</ul>\n</li>\n'
+                    last_level -= 1
+                yield '<li><a href="#toc-%d">%s</a>' % (index, text)
 
-        yield '</ul>'
+        # close tags
+        yield '</li>\n'
+        while last_level > first_level:
+            yield '</ul>\n</li>\n'
+            last_level -= 1
+
+        yield '</ul>\n'
