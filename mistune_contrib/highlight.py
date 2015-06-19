@@ -1,3 +1,13 @@
+# coding: utf-8
+
+"""
+    mistune_contrib.highlight
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Support highlight code features for mistune.
+
+    :copyright: (c) 2014 - 2015 by Hsiaoming Yang.
+"""
 
 import mistune
 from pygments import highlight
@@ -27,6 +37,7 @@ def block_code(text, lang, inlinestyles=False, linenos=False):
 
 class HighlightMixin(object):
     def block_code(self, text, lang):
-        inlinestyles = getattr(self, '_inlinestyles', False)
-        linenos = getattr(self, '_linenos', False)
+        # renderer has an options
+        inlinestyles = self.options.get('inlinestyles')
+        linenos = self.options.get('linenos')
         return block_code(text, lang, inlinestyles, linenos)
