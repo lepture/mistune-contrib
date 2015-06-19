@@ -1,6 +1,29 @@
+# coding: utf-8
+
+"""
+    mistune_contrib.toc
+    ~~~~~~~~~~~~~~~~~~~
+
+    Support TOC features for mistune.
+
+    :copyright: (c) 2015 by Hsiaoming Yang.
+"""
 
 
 class TocMixin(object):
+    """TOC mixin for Renderer, mix this with Renderer::
+
+        class TocRenderer(TocMixin, Renderer):
+            pass
+
+        toc = TocRenderer()
+        md = mistune.Markdown(renderer=toc)
+        # should parse markdown first
+        md.parse(text)
+        # render TOC HTML
+        toc.render_toc(level=3)
+    """
+
     def header(self, text, level, raw=None):
         if not hasattr(self, 'toc_tree'):
             self.toc_tree = []

@@ -15,7 +15,7 @@ import re
 class MathBlockMixin(object):
     """Math mixin for BlockLexer, mix this with BlockLexer::
 
-        class MathBlockLexer(BlockLexer, MathBlockMixin):
+        class MathBlockLexer(MathBlockMixin, BlockLexer):
             def __init__(self, *args, **kwargs):
                 self.enable_math()
                 super(MathBlockLexer, self).__init__(*args, **kwargs)
