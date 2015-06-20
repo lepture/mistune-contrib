@@ -53,7 +53,7 @@ class MathInlineMixin(object):
 
     def enable_math(self):
         self.rules.math = re.compile(r'^\$(.+?)\$')
-        self.default_rules.insert('math', 0)
+        self.default_rules.insert(0, 'math')
 
     def output_math(self, m):
         return self.renderer.math(m.group(1))
