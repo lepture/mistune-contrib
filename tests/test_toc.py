@@ -69,6 +69,7 @@ expected = '''
 def test_toc():
     toc = TocRenderer()
     md = mistune.Markdown(renderer=toc)
+    toc.reset_toc()
     assert 'toc-0' in md.parse(text)
     rv = toc.render_toc(level=3)
     rv = rv.replace('\n', '').replace(' ', '')

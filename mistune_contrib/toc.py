@@ -18,16 +18,18 @@ class TocMixin(object):
 
         toc = TocRenderer()
         md = mistune.Markdown(renderer=toc)
-        # should parse markdown first
-        md.parse(text)
-        # render TOC HTML
-        toc.render_toc(level=3)
+
+        # required in this order
+        toc.reset_toc()          # initial the status
+        md.parse(text)           # parse for headers
+        toc.render_toc(level=3)  # render TOC HTML
     """
 
+    def reset_toc(self):
+        self.toc_tree = []
+        self.toc_count = 0
+
     def header(self, text, level, raw=None):
-        if not hasattr(self, 'toc_tree'):
-            self.toc_tree = []
-            self.toc_count = 0
         rv = '<h%d id="toc-%d">%s</h%d>\n' % (
             level, self.toc_count, text, level
         )
