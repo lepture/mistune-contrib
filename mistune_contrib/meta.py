@@ -18,7 +18,7 @@ import re
 
 
 INDENTATION = re.compile(r'\n\s{2,}')
-META = re.compile(r'^(\w+):\s*(.*(?:\n\s{2,}.*)*)\n')
+META = re.compile(r'^(\w+):\s*(.+?)\n')
 
 
 def parse(text):
