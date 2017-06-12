@@ -17,8 +17,8 @@ class MathBlockMixin(object):
 
         class MathBlockLexer(MathBlockMixin, BlockLexer):
             def __init__(self, *args, **kwargs):
-                self.enable_math()
                 super(MathBlockLexer, self).__init__(*args, **kwargs)
+                self.enable_math()
     """
     def enable_math(self):
         self.rules.block_math = re.compile(r'^\$\$(.*?)\$\$', re.DOTALL)
@@ -47,13 +47,14 @@ class MathInlineMixin(object):
 
         class MathInlineLexer(InlineLexer, MathInlineMixin):
             def __init__(self, *args, **kwargs):
-                self.enable_math()
                 super(MathInlineLexer, self).__init__(*args, **kwargs)
+                self.enable_math()
     """
 
     def enable_math(self):
         self.rules.math = re.compile(r'^\$(.+?)\$')
         self.default_rules.insert(0, 'math')
+        self.rules.text = re.compile(r'^[\s\S]+?(?=[\\<!\[_*`~\$]|https?://| {2,}\n|$)')
 
     def output_math(self, m):
         return self.renderer.math(m.group(1))
