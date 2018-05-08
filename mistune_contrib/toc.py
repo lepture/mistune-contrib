@@ -45,8 +45,8 @@ class TocMixin(object):
         return ''.join(self._iter_toc(level))
 
     def _iter_toc(self, level):
-        first_level = None
-        last_level = None
+        first_level = 0
+        last_level = 0
 
         yield '<ul id="table-of-content">\n'
 
@@ -57,7 +57,7 @@ class TocMixin(object):
                 # ignore this level
                 continue
 
-            if first_level is None:
+            if first_level == 0 :
                 # based on first level
                 first_level = l
                 last_level = l
